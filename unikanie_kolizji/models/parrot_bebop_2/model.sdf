@@ -1,0 +1,251 @@
+<?xml version="1.0"?>
+  <!-- 
+  Autor: Julio César Rodríguez
+  Correo: juliordzcer@gmail.com
+  Fecha: 2025-03-14
+  -->
+
+<sdf version="1.9">
+  <model name="parrot_bebop_2">
+    <link name="body">
+      <pose>0 0 0 0 0 0</pose>
+      <enable_wind>true</enable_wind> <!-- wind opt-in; propellers/cylinder link stay off -->
+      <inertial>
+        <mass>0.503</mass> <!-- kg -->
+        <inertia> <!-- kg.m^2 -->
+          <ixx>1.805e-3</ixx>
+          <ixy>-8.619e-7</ixy>
+          <iyy>1.764e-3</iyy>
+          <ixz>1.555e-5</ixz>
+          <iyz>3.595e-7</iyz>
+          <izz>3.328e-3</izz>
+        </inertia>
+      </inertial>
+
+      <collision name="body_inertia_collision">
+        <pose>-0.00424 0.00014 -0.00595 0 0 0</pose>
+        <geometry>
+          <box><size>0.316618 0.330564 0.089582</size></box>
+        </geometry>
+        <max_contacts>10</max_contacts>
+        <surface>
+          <bounce>
+            <restitution_coefficient>0.828</restitution_coefficient>
+            <threshold>0</threshold>
+          </bounce>
+          <friction>
+            <ode>
+              <mu>10</mu>
+              <mu2>5</mu2>
+              <fdir1>0 0 0</fdir1>
+              <slip1>0.0</slip1>
+              <slip2>0.0</slip2>
+            </ode>
+          </friction>
+          <contact>
+            <ode>
+              <kp>10000.0</kp>
+              <kd>10.0</kd>
+              <max_vel>0.01</max_vel>
+              <min_depth>0</min_depth>
+            </ode>
+          </contact>
+        </surface>
+      </collision>
+
+
+      <visual name="body_inertia_visual">
+        <geometry>
+          <mesh>
+            <uri>model://parrot_bebop_2/meshes/hull.dae</uri>
+          </mesh>
+        </geometry>
+      </visual>      
+
+      <sensor name='multiranger' type='gpu_lidar'>"
+        <pose relative_to='base_link'>0 0 0.1 0 0 0</pose>
+        <update_rate>10</update_rate>
+        <ray>
+          <scan>
+            <horizontal>
+                <samples>4</samples>
+                <resolution>1</resolution>
+                <min_angle>-3.14</min_angle>
+                <max_angle>1.57</max_angle>
+            </horizontal>
+            <vertical>
+                <samples>1</samples>
+                <resolution>0.01</resolution>
+                <min_angle>0</min_angle>
+                <max_angle>0</max_angle>
+            </vertical>
+          </scan>
+          <range>
+            <min>0.01</min>
+            <max>3.49</max>
+            <resolution>0.01</resolution>
+          </range>
+        </ray>
+        <always_on>1</always_on>
+        <visualize>true</visualize>
+      </sensor>
+
+
+      <sensor name="rgb_camera_sensor" type="camera">
+        <pose relative_to='base_link'>0.113 0 0 0 0 0</pose>
+        <always_on>1</always_on>
+        <update_rate>15</update_rate>
+        <camera>
+          <horizontal_fov>1.2</horizontal_fov>
+          <image>
+            <width>640</width>
+            <height>480</height>
+            <format>R8G8B8</format>
+          </image>
+          <clip>
+            <near>0.1</near>
+            <far>20</far>
+          </clip>
+          <lens>
+            <!-- type element is mandatory -->
+            <type>custom</type>
+            <!-- manually defined mapping function r = c1*f*fun(theta/c2 + c3) -->
+            <!-- More information here: https://en.wikipedia.org/wiki/Fisheye_lens#Mapping_function -->
+            <custom_function>
+              <c1>1.05</c1>
+              <!-- linear scaling -->
+              <c2>4</c2>
+              <!-- angle scaling -->
+              <f>1.0</f>
+              <!-- one more scaling parameter -->
+              <fun>tan</fun>
+              <!-- one of sin,tan,id -->
+            </custom_function>
+            <!-- if it is set to `true` your horizontal FOV will ramain as defined -->
+            <!-- othervise it depends on lens type and custom function, if there is one -->
+            <scale_to_hfov>true</scale_to_hfov>
+            <!-- clip everything that is outside of this angle -->
+            <cutoff_angle>3.1415</cutoff_angle>
+            <!-- resolution of the cubemap texture, the highter it is - the sharper is your image -->
+            <env_texture_size>512</env_texture_size>
+          </lens>
+        </camera>
+        <visualize>true</visualize>
+      </sensor>
+
+    </link>
+
+    <link name='propeller_rr'>
+      <pose>-0.09035 -0.11423 -0.00501 0 0 0</pose>
+      <inertial>
+        <mass>0.005</mass>
+        <inertia>
+          <ixx>9.75e-07</ixx>
+          <iyy>4.17041e-05</iyy>
+          <izz>4.26041e-05</izz>
+        </inertia>
+      </inertial>
+
+      <visual name="propeller_rr_visual">
+        <geometry>
+          <mesh>
+            <uri>model://parrot_bebop_2/meshes/propeller_rr.dae</uri>
+          </mesh>
+        </geometry>
+      </visual>
+    </link>
+
+    <joint name='propeller_rr_joint' type='revolute'>
+      <child>propeller_rr</child>
+      <parent>body</parent>
+      <axis>
+        <xyz>0 0 1</xyz>
+      </axis>
+    </joint>
+
+    <link name='propeller_rl'>
+      <pose>-0.09035 0.11452 -0.00501 0 0 0</pose>
+      <inertial>
+        <mass>0.005</mass>
+        <inertia>
+          <ixx>9.75e-07</ixx>
+          <iyy>4.17041e-05</iyy>
+          <izz>4.26041e-05</izz>
+        </inertia>
+      </inertial>
+
+      <visual name="propeller_rl_visual">
+        <geometry>
+          <mesh>
+            <uri>model://parrot_bebop_2/meshes/propeller_rl.dae</uri>
+          </mesh>
+        </geometry>
+      </visual>
+    </link>
+
+    <joint name='propeller_rl_joint' type='revolute'>
+      <child>propeller_rl</child>
+      <parent>body</parent>
+      <axis>
+        <xyz>0 0 1</xyz>
+      </axis>
+    </joint>
+
+    <link name='propeller_fr'>
+      <pose>0.08456 -0.11435 -0.00501 0 0 0</pose>
+      <inertial>
+        <mass>0.005</mass>
+        <inertia>
+          <ixx>9.75e-07</ixx>
+          <iyy>4.17041e-05</iyy>
+          <izz>4.26041e-05</izz>
+        </inertia>
+      </inertial>
+
+      <visual name="propeller_fr_visual">
+        <geometry>
+          <mesh>
+            <uri>model://parrot_bebop_2/meshes/propeller_fr.dae</uri>
+          </mesh>
+        </geometry>
+      </visual>
+    </link>
+
+    <joint name='propeller_fr_joint' type='revolute'>
+      <child>propeller_fr</child>
+      <parent>body</parent>
+      <axis>
+        <xyz>0 0 1</xyz>
+      </axis>
+    </joint>
+
+    <!-- Propeller FL -->
+    <link name='propeller_fl'>
+      <pose>0.08456 0.11463 -0.00501 0 0 0</pose>
+      <inertial>
+        <mass>0.005</mass>
+        <inertia>
+          <ixx>9.75e-07</ixx>
+          <iyy>4.17041e-05</iyy>
+          <izz>4.26041e-05</izz>
+        </inertia>
+      </inertial>
+
+      <visual name="propeller_fl_visual">
+        <geometry>
+          <mesh>
+            <uri>model://parrot_bebop_2/meshes/propeller_fl.dae</uri>
+          </mesh>
+        </geometry>
+      </visual>
+    </link>
+
+    <joint name='propeller_fl_joint' type='revolute'>
+      <child>propeller_fl</child>
+      <parent>body</parent>
+      <axis>
+        <xyz>0 0 1</xyz>
+      </axis>
+    </joint>
+  </model>
+</sdf>

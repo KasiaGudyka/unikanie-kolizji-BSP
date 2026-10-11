@@ -1,0 +1,15 @@
+physics_engine: ode
+drone_mass_kg: 0.5
+wind: 'off'
+wind_speed_ms: 0.0
+drone_count: 2
+cas_method: method_2
+show_trajectories: true
+recording_enabled: true
+compatibility:
+  valid: true
+  errors: []
+  warnings: []
+launch_command: ros2 launch unikanie_kolizji gazebo_two_drones.launch.py physics_engine:=ode
+  drone_count:=2 drone_size_kg:=0.5 wind:=off collision_avoidance_method:=method_2
+  recording_enabled:=true

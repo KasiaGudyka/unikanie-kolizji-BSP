@@ -1,0 +1,32 @@
+# ros_gz_bridge configuration for unikanie_kolizji.
+#
+# Bridges each drone's fused velocity command (ROS geometry_msgs/Twist) to the
+# gz.msgs.Twist topic that the drone's MulticopterVelocityControl system
+# subscribes to (/<namespace>/cmd_vel). The motor models then convert the
+# velocity command into per-rotor forces/torques for physically accurate flight.
+- ros_topic_name: "/drone_1/drive_cmd"
+  gz_topic_name: "/drone_left/cmd_vel"
+  ros_type_name: "geometry_msgs/msg/Twist"
+  gz_type_name: "gz.msgs.Twist"
+  direction: "ROS_TO_GZ"
+
+- ros_topic_name: "/drone_2/drive_cmd"
+  gz_topic_name: "/drone_right/cmd_vel"
+  ros_type_name: "geometry_msgs/msg/Twist"
+  gz_type_name: "gz.msgs.Twist"
+  direction: "ROS_TO_GZ"
+
+# Motor enable/disable: the controller nodes publish std_msgs/Bool on
+# /drone_left|drone_right/enable, which the MulticopterMotorModel plugins use to
+# arm/disarm the rotors.
+- ros_topic_name: "/drone_left/enable"
+  gz_topic_name: "/drone_left/enable"
+  ros_type_name: "std_msgs/msg/Bool"
+  gz_type_name: "gz.msgs.Boolean"
+  direction: "ROS_TO_GZ"
+
+- ros_topic_name: "/drone_right/enable"
+  gz_topic_name: "/drone_right/enable"
+  ros_type_name: "std_msgs/msg/Bool"
+  gz_type_name: "gz.msgs.Boolean"
+  direction: "ROS_TO_GZ"

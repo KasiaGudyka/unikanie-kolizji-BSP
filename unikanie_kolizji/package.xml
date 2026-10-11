@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>unikanie_kolizji</name>
+  <version>0.0.0</version>
+  <description>
+    Package for testing UAV collision avoidance methods.
+    Built for Gazebo Harmonic (gz-sim 8) and ROS 2 Jazzy.
+  </description>
+  <maintainer email="katarzyna.gudyka@gmail.com">Katarzyna Gudyka</maintainer>
+  <license>Apache-2.0</license>
+
+  <depend>rclpy</depend>
+  <exec_depend>geometry_msgs</exec_depend>
+  <exec_depend>launch</exec_depend>
+  <exec_depend>launch_ros</exec_depend>
+  <exec_depend>ros_gz_interfaces</exec_depend>
+  <exec_depend>sensor_msgs</exec_depend>
+  <exec_depend>std_msgs</exec_depend>
+
+  <!-- GUI dependencies for the drone simulation configuration window -->
+  <exec_depend>python3-pyqt5</exec_depend>
+  <exec_depend>python3-yaml</exec_depend>
+
+  <export>
+    <build_type>ament_python</build_type>
+  </export>
+</package>
