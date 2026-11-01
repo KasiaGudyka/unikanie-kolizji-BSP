@@ -1,14 +1,4 @@
-#!/usr/bin/env bash
-#
-# Build and launch script for unikanie_kolizji (Gazebo Harmonic - gz-sim 8 + ROS2 Jazzy).
-# Usage: bash start.txt   (or: chmod +x start.txt && ./start.txt)
-#
-# Builds the package, then opens the configuration GUI. The GUI validates
-# option compatibility, writes the selected configuration to
-# config/sim_config.yaml, and launches the simulation (with built-in
-# collision avoidance + in-sim name labels + trajectory capture) when
-# "Launch simulation" is pressed.
-#
+
 set -e
 
 WS="/home/fujitsu/ros2_ws"
@@ -24,8 +14,6 @@ colcon build --packages-select "${PKG}"
 echo "====[3/3] Sourcing workspace install and opening GUI ===="
 source "${WS}/install/setup.bash"
 
-# Ensure gz-sim can find its physics/render engine plugins when the GUI
-# starts the simulation from a clean environment.
 export GZ_SIM_PHYSICS_ENGINE_PATH=\
 "/opt/ros/jazzy/opt/gz_physics_vendor/lib/gz-physics-7/engine-plugins:\
 /usr/lib/x86_64-linux-gnu/gz-physics-7/engine-plugins"
