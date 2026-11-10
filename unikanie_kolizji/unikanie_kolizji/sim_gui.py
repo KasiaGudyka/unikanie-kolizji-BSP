@@ -48,7 +48,7 @@ from PyQt5.QtWidgets import (QApplication, QCheckBox, QComboBox, QFormLayout,
                               QTabWidget)
 
 from . import option_compatibility as compat
-from .trajectory_3d_panel import TrajectoryPanel3D as _Trajectory3DPanel
+# from .trajectory_3d_panel import TrajectoryPanel3D as _Trajectory3DPanel
 from . import stats_save
 from .drone_gps import (ELAPSED_TOPIC, GO_TOPIC, VIEW_READY_TOPIC)
 from .drone_start_gate import COLLISIONS_TOPIC
@@ -104,8 +104,8 @@ class DroneConfigGUI(QMainWindow):
         self._store = TrajectoryStore()
         self._panel = TrajectoryPanel(self._store)
         self._panel.save_requested.connect(self._save_manual_snapshot)
-        self._panel_3d = _Trajectory3DPanel(self._store, 'gps')
-        self._panel_3d.save_requested.connect(self._save_manual_snapshot_3d)
+        #self._panel_3d = _Trajectory3DPanel(self._store, 'gps')
+        #self._panel_3d.save_requested.connect(self._save_manual_snapshot_3d)
 
         # ROS state (initialised lazily on first launch).
         self._ros_node = None
@@ -412,19 +412,19 @@ class DroneConfigGUI(QMainWindow):
         except Exception as exc:  # noqa: BLE001
             print(f'[stats] snapshot failed: {exc}', file=sys.stderr)
 
-    def _save_manual_snapshot_3d(self):
-        """Manual save of the 3-D view (no CSV row is appended)."""
-        cfg = self._run_config
-        fig = self._panel_3d.figure()
-        if cfg is None or self._active_method is None or fig is None:
-            return
-        try:
-            path = stats_save.save_png_snapshot(
-                self._stats_dir, cfg['cas'], cfg['drone_count'],
-                cfg['drone_mass'], cfg['wind'], fig)
-            print(f'[stats] saved 3-D view: {path}')
-        except Exception as exc:  # noqa: BLE001
-            print(f'[stats] 3-D snapshot failed: {exc}', file=sys.stderr)
+    #def _save_manual_snapshot_3d(self):
+    #    """Manual save of the 3-D view (no CSV row is appended)."""
+    #    cfg = self._run_config
+    #    fig = self._panel_3d.figure()
+    #    if cfg is None or self._active_method is None or fig is None:
+    #        return
+    #    try:
+    #        path = stats_save.save_png_snapshot(
+    #            self._stats_dir, cfg['cas'], cfg['drone_count'],
+    #            cfg['drone_mass'], cfg['wind'], fig)
+    #        print(f'[stats] saved 3-D view: {path}')
+    #    except Exception as exc:  # noqa: BLE001
+    #        print(f'[stats] 3-D snapshot failed: {exc}', file=sys.stderr)
 
     def _pending_merge_cleanup(self):
         pass
